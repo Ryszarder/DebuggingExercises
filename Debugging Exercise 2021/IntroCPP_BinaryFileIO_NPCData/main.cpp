@@ -13,9 +13,9 @@ int main()
     DataFile data;
     int currentRecordIdx = 0;
 
-    data.Load("npc_data.dat");
+    //data.Load("npc_data.dat");
 
-    Record* currentRecord = data.GetRecord(currentRecordIdx);
+    Record* currentRecord = data.GetRecord("npc_data.dat", currentRecordIdx);
     Texture2D recordTexture = LoadTextureFromImage(currentRecord->image);
     
     while (!WindowShouldClose())
@@ -30,7 +30,7 @@ int main()
             {
                 currentRecordIdx = 0;
             }
-            currentRecord = data.GetRecord(currentRecordIdx);
+            currentRecord = data.GetRecord("npc_data.dat", currentRecordIdx);
             recordTexture = LoadTextureFromImage(currentRecord->image);
         }
 
@@ -41,7 +41,7 @@ int main()
             {
                 currentRecordIdx = data.GetRecordCount();
             }
-            currentRecord = data.GetRecord(currentRecordIdx);
+            currentRecord = data.GetRecord("npc_data.dat", currentRecordIdx);
             recordTexture = LoadTextureFromImage(currentRecord->image);
         }
 

@@ -1,36 +1,81 @@
 #include "DataFile.h"
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 DataFile::DataFile()
 {
 	recordCount = 0;
+	currentRecord = new Record;
 }
 
 DataFile::~DataFile()
 {
-	Clear();
+	/*Clear();*/
 }
 
-void DataFile::AddRecord(const char* imageFilename, const char* name, int age)
+//void DataFile::AddRecord(const char* imageFilename, const char* name, int age)
+//{
+//	Image i = LoadImage(imageFilename);
+//
+//	Record* r = new Record;
+//	r->image = i;
+//	r->age = age;
+//
+//	int length = strlen(name);
+//	r->name = new char[length + 1];
+//	strcpy_s(r->name, length, name);
+//
+//	records.push_back(r);
+//	recordCount++;
+//}
+
+Record* DataFile::GetRecord(const char* filename, int index)
 {
-	Image i = LoadImage(imageFilename);
+	ifstream infile(filename, ios::binary);
+	
+	recordCount = 0;
+	infile.read((char*)&recordCount, sizeof(int));
+	
+	for (int i = 0; i < recordCount; i++)
+	{		
+		//Size
+		int nameSize = 0;
+		int ageSize = 0;
+		int width = 0, height = 0, format = 0, imageSize = 0;
+	
+		infile.read((char*)&width, sizeof(int));
+		infile.read((char*)&height, sizeof(int));
+	
+		imageSize = sizeof(Color) * width * height;
+	
+		infile.read((char*)&nameSize, sizeof(int));
+		infile.read((char*)&ageSize, sizeof(int));
+		
+		int recordSize = imageSize + nameSize + ageSize;
 
-	Record* r = new Record;
-	r->image = i;
-	r->age = age;
+		if (i == index)
+		{
+			//Data
+			char* imgdata = new char[imageSize];
+			infile.read(imgdata, imageSize);
+	
+			currentRecord = new Record();
+			currentRecord->image = LoadImageEx((Color*)imgdata, width, height);
+			currentRecord->name = new char[nameSize];
+			infile.read(currentRecord->name, nameSize);
+			infile.read((char*)currentRecord, ageSize);
 
-	int length = strlen(name);
-	r->name = new char[length + 1];
-	strcpy_s(r->name, length, name);
+		}
+		else
+		{
+			infile.seekg(recordSize, std::ios::cur);
+		}	
+	}
+	
+	infile.close();
 
-	records.push_back(r);
-	recordCount++;
-}
-
-Record* DataFile::GetRecord(int index)
-{
-	return records[index];
+	return currentRecord;
 }
 
 //--------------------------------------------------------
@@ -67,52 +112,60 @@ Record* DataFile::GetRecord(int index)
 //}
 
 //Replace the contents of this function with your load
-void DataFile::Load(const char* filename)
-{
-	Clear();
+//current position of the files
+//1.262164
+//2.524331
+//3.786500
+//4.1048675
+//5.1310853
+//void DataFile::Load(const char* filename)
+//{
+//	Clear();
+//
+//	ifstream infile(filename, ios::binary);
+//
+//	recordCount = 0;
+//	infile.read((char*)&recordCount, sizeof(int));
+//
+//	for (int i = 0; i < recordCount; i++)
+//	{		
+//
+//		int nameSize = 0;
+//		int ageSize = 0;
+//		int width = 0, height = 0, format = 0, imageSize = 0;
+//
+//		infile.read((char*)&width, sizeof(int));
+//		infile.read((char*)&height, sizeof(int));
+//
+//		imageSize = sizeof(Color) * width * height;
+//
+//		infile.read((char*)&nameSize, sizeof(int));
+//		infile.read((char*)&ageSize, sizeof(int));
+//
+//		char* imgdata = new char[imageSize];
+//		infile.read(imgdata, imageSize);
+//
+//		Record* r = new Record();
+//		r->image = LoadImageEx((Color*)imgdata, width, height);
+//		r->name = new char[nameSize];
+//		infile.read(r->name, nameSize);
+//		infile.read((char*)&r->age, ageSize);
+//		
+//
+//		records.push_back(r);
+//
+//		delete[] imgdata;
+//	}
+//
+//	infile.close();
+//}
 
-	ifstream infile(filename, ios::binary);
-
-	recordCount = 0;
-	infile.read((char*)&recordCount, sizeof(int));
-
-	for (int i = 0; i < recordCount; i++)
-	{		
-		int nameSize = 0;
-		int ageSize = 0;
-		int width = 0, height = 0, format = 0, imageSize = 0;
-
-		infile.read((char*)&width, sizeof(int));
-		infile.read((char*)&height, sizeof(int));
-
-		imageSize = sizeof(Color) * width * height;
-
-		infile.read((char*)&nameSize, sizeof(int));
-		infile.read((char*)&ageSize, sizeof(int));
-
-		char* imgdata = new char[imageSize];
-		infile.read(imgdata, imageSize);
-
-		Record* r = new Record();
-		r->image = LoadImageEx((Color*)imgdata, width, height);
-		r->name = new char[nameSize];
-		infile.read(r->name, nameSize);
-		infile.read((char*)&r->age, ageSize);
-
-		records.push_back(r);
-
-		delete[] imgdata;
-	}
-
-	infile.close();
-}
-
-void DataFile::Clear()
-{
-	for (int i = 0; i < (int)records.size(); i++)
-	{
-		delete records[i];
-	}
-	records.clear();
-	recordCount = 0;
-}
+//void DataFile::Clear()
+//{
+//	for (int i = 0; i < (int)records.size(); i++)
+//	{
+//		delete records[i];
+//	}
+//	records.clear();
+//	recordCount = 0;
+//}
