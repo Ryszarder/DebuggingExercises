@@ -1,12 +1,12 @@
 #include "DataFile.h"
 #include <fstream>
-#include <iostream>
+//#include <iostream>
 using namespace std;
 
 DataFile::DataFile()
 {
 	recordCount = 0;
-	currentRecord = new Record;
+
 }
 
 DataFile::~DataFile()
@@ -30,7 +30,7 @@ DataFile::~DataFile()
 //	recordCount++;
 //}
 
-Record* DataFile::GetRecord(const char* filename, int index)
+Record* DataFile::GetRecord(int index, const char* filename)
 {
 	ifstream infile(filename, ios::binary);
 	
@@ -56,6 +56,12 @@ Record* DataFile::GetRecord(const char* filename, int index)
 
 		if (i == index)
 		{
+			if (currentRecord)
+			{
+				UnloadImage(currentRecord->image);
+				delete[] currentRecord->name;
+				delete currentRecord;
+			}
 			//Data
 			char* imgdata = new char[imageSize];
 			infile.read(imgdata, imageSize);
@@ -64,15 +70,16 @@ Record* DataFile::GetRecord(const char* filename, int index)
 			currentRecord->image = LoadImageEx((Color*)imgdata, width, height);
 			currentRecord->name = new char[nameSize];
 			infile.read(currentRecord->name, nameSize);
-			infile.read((char*)currentRecord, ageSize);
+			infile.read((char*)&currentRecord->age, ageSize);
 
+			delete[] imgdata;
+			break;
 		}
 		else
 		{
 			infile.seekg(recordSize, std::ios::cur);
 		}	
 	}
-	
 	infile.close();
 
 	return currentRecord;

@@ -19,7 +19,7 @@ public:
 	~DataFile();
 
 	//void AddRecord(const char* imageFilename, const char* name, int age);
-	Record* GetRecord(const char* filename, int index);
+	Record* GetRecord(int index, const char* filename);
 
 	int GetRecordCount() { return recordCount; };
 
