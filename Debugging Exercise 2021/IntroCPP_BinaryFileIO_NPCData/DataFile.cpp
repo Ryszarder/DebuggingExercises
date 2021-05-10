@@ -6,7 +6,6 @@ using namespace std;
 DataFile::DataFile()
 {
 	recordCount = 0;
-
 }
 
 DataFile::~DataFile()
