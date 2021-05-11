@@ -6,6 +6,7 @@ using namespace std;
 DataFile::DataFile()
 {
 	recordCount = 0;
+	currentRecord = new Record();
 }
 
 DataFile::~DataFile()

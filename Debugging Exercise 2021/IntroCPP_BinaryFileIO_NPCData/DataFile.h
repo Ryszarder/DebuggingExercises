@@ -28,7 +28,6 @@ public:
 
 private:
 	//void Clear();
-
 	int recordCount;
 	Record* currentRecord;
 	/*std::vector<Record*> records;*/	// delete this vector. Load only the required record 

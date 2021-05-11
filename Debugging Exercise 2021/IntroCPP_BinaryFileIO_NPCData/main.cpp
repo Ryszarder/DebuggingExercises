@@ -39,7 +39,7 @@ int main()
             currentRecordIdx++;
             if (currentRecordIdx >= data.GetRecordCount())
             {
-                currentRecordIdx = data.GetRecordCount();
+                currentRecordIdx = data.GetRecordCount()-1;
             }
             currentRecord = data.GetRecord(currentRecordIdx, "npc_data.dat");
             recordTexture = LoadTextureFromImage(currentRecord->image);
