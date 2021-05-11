@@ -13,8 +13,6 @@ int main()
     DataFile data;
     int currentRecordIdx = 0;
 
-    //data.Load("npc_data.dat");
-
     Record* currentRecord = data.GetRecord(currentRecordIdx, "npc_data.dat");
     Texture2D recordTexture = LoadTextureFromImage(currentRecord->image);
     
