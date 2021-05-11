@@ -67,9 +67,10 @@ Record* DataFile::GetRecord(int index, const char* filename)
 	
 			currentRecord = new Record();
 			currentRecord->image = LoadImageEx((Color*)imgdata, width, height);
-			currentRecord->name = new char[nameSize];
+			currentRecord->name = new char[nameSize+1];
 			infile.read(currentRecord->name, nameSize);
 			infile.read((char*)&currentRecord->age, ageSize);
+			currentRecord->name[nameSize] = 0;
 
 			delete[] imgdata;
 			break;
