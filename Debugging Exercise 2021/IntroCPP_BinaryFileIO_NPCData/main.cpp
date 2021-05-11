@@ -1,9 +1,11 @@
+#include <crtdbg.h>
 #include "raylib.h"
 #include "DataFile.h"
 
 //Where the program starts when launch
 int main()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//--------------------------------------------------------------------------------------
     // Initialization
     //--------------------------------------------------------------------------------------
