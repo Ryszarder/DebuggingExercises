@@ -72,7 +72,7 @@ Record* DataFile::GetRecord(int index, const char* filename)
 
 			//Moves the value from nameSize over to name with the maximum characters space
 			//Add 1 to the nameSize so it will stop reading at 0 than keep reading random bytes
-			currentRecord->name = new char[nameSize+1];
+			currentRecord->name = new char[nameSize + 1];
 
 			//Reads the name and age into the file
 			infile.read(currentRecord->name, nameSize);

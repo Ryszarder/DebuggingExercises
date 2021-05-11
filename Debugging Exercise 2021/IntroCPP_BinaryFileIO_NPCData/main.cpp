@@ -56,13 +56,12 @@ int main()
             if (currentRecordIdx >= data.GetRecordCount())
             {
 				//Set currentRecordIdx to data.GetRecordCount - 1 
-                currentRecordIdx = data.GetRecordCount()-1;
+                currentRecordIdx = data.GetRecordCount() - 1;
             }
 			//Get data of the new profile and image
             currentRecord = data.GetRecord(currentRecordIdx, "npc_data.dat");
             recordTexture = LoadTextureFromImage(currentRecord->image);
         }
-
 
 		//--------------------------------------------------------------------------------------
         // Draw
